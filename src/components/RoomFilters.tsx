@@ -33,6 +33,9 @@ export function RoomFilters() {
       <h2 className="text-lg md:text-xl font-bold text-gray-900">Filters</h2>
 
       <div className="relative">
+        <label htmlFor="roomType" className="sr-only">
+          Room Type
+        </label>
         <select
           id="roomType"
           value={filters.roomType || ""}
@@ -48,7 +51,7 @@ export function RoomFilters() {
         </select>
 
         <ChevronDown
-          aria-label="ChevronDown icon"
+          aria-hidden="true"
           size={18}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
         />

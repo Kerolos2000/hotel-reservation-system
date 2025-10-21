@@ -17,6 +17,9 @@
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
     "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
     "noImplicitReturns": true
   },
   "include": ["src", "vite.config.ts", "eslint.config.js", ".prettierrc.json"]

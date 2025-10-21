@@ -17,7 +17,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-white shadow-md h-[70px] sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 py-3 md:py-4">
         <div className="flex items-center justify-between">
           <Link
@@ -73,8 +73,9 @@ export function Navbar() {
           <button
             className="md:hidden text-gray-700 hover:text-blue-600 transition"
             onClick={() => setDrawerOpen(true)}
+            aria-label="Open menu"
           >
-            <Menu size={28} />
+            <Menu size={28} aria-hidden="true" aria-label="Open menu" />
           </button>
         </div>
       </div>
@@ -87,8 +88,9 @@ export function Navbar() {
               <button
                 onClick={() => setDrawerOpen(false)}
                 className="text-gray-700 hover:text-blue-600 transition"
+                aria-label="Close menu"
               >
-                <X size={26} />
+                <X size={26} aria-hidden="true" aria-label="Close menu" />
               </button>
             </div>
             <Link

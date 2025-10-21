@@ -1,16 +1,15 @@
-import type React from "react";
+import { Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
 import { Navbar } from "src/components/Navbar";
 
-interface MainLayoutProps {
-  children: React.ReactNode;
-}
-
-export function MainLayout({ children }: MainLayoutProps) {
+export function MainLayout() {
   return (
     <div className="h-screen-header bg-gray-50">
       <Navbar />
-      <main className="pt-0">{children}</main>
+      <main className="pt-0">
+        {" "}
+        <Outlet />
+      </main>
       <Toaster position="top-right" />
     </div>
   );

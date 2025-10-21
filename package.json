@@ -1,0 +1,37 @@
+{
+  "name": "hotel-reservation-system",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "commit": "git-cz",
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "lint": "eslint src --ext ts,tsx",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "latest",
+    "git-cz": "^4.9.0",
+    "lucide-react": "^0.454.0",
+    "path": "latest",
+    "react": "^19",
+    "react-dom": "^19",
+    "react-hook-form": "latest",
+    "react-router-dom": "latest",
+    "sonner": "latest",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.0",
+    "zustand": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.5",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5",
+    "vite": "^5.0.0"
+  }
+}

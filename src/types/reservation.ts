@@ -25,4 +25,5 @@ export interface RoomFilters {
   priceMin: number;
   priceMax: number;
   roomType: string | null;
+  sortOrder: "asc" | "desc" | "none";
 }

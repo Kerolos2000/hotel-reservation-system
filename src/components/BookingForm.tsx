@@ -1,8 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { calculateNights, calculateTotalPrice } from "src/lib";
+import { calculateNights, calculateTotalPrice, cn } from "src/lib";
 import { Room } from "src/types";
 import { BookingFormData, bookingSchema } from "src/validation";
+import {
+  Button,
+  Calendar,
+  Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./ui";
 
 interface BookingFormProps {
   room: Room;
@@ -16,9 +26,9 @@ export function BookingForm({
   isLoading = false,
 }: BookingFormProps) {
   const {
-    register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
@@ -33,6 +43,13 @@ export function BookingForm({
       : 0;
   const totalPrice = nights > 0 ? calculateTotalPrice(room.price, nights) : 0;
 
+  const handleSelectDate = (
+    field: "checkInDate" | "checkOutDate",
+    date: Date | undefined
+  ) => {
+    if (date) setValue(field, format(date, "yyyy-MM-dd"));
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -43,20 +60,41 @@ export function BookingForm({
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-        <div>
-          <label
+        <div className="space-y-1">
+          <Label
             htmlFor="checkInDate"
-            className="block text-xs md:text-sm font-medium text-gray-700 mb-1"
+            className="text-sm font-medium text-gray-700"
           >
             Check-in Date
-          </label>
-          <input
-            {...register("checkInDate")}
-            type="date"
-            id="checkInDate"
-            min={new Date().toISOString().split("T")[0]}
-            className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-          />
+          </Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !checkInDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+                <span className="truncate block w-full">
+                  {checkInDate
+                    ? format(new Date(checkInDate), "PPP")
+                    : "Pick a date"}
+                </span>
+              </Button>
+            </PopoverTrigger>
+
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={checkInDate ? new Date(checkInDate) : undefined}
+                onSelect={(date) => handleSelectDate("checkInDate", date)}
+                disabled={(date) => date < new Date()}
+              />
+            </PopoverContent>
+          </Popover>
           {errors.checkInDate && (
             <p className="text-red-500 text-xs mt-1">
               {errors.checkInDate.message}
@@ -64,20 +102,43 @@ export function BookingForm({
           )}
         </div>
 
-        <div>
-          <label
+        <div className="space-y-1">
+          <Label
             htmlFor="checkOutDate"
-            className="block text-xs md:text-sm font-medium text-gray-700 mb-1"
+            className="text-sm font-medium text-gray-700"
           >
             Check-out Date
-          </label>
-          <input
-            {...register("checkOutDate")}
-            type="date"
-            id="checkOutDate"
-            min={checkInDate || new Date().toISOString().split("T")[0]}
-            className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-          />
+          </Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !checkOutDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+                <span className="truncate block w-full">
+                  {checkOutDate
+                    ? format(new Date(checkOutDate), "PPP")
+                    : "Pick a date"}
+                </span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={checkOutDate ? new Date(checkOutDate) : undefined}
+                onSelect={(date) => handleSelectDate("checkOutDate", date)}
+                disabled={(date) =>
+                  date < (checkInDate ? new Date(checkInDate) : new Date())
+                }
+              />
+            </PopoverContent>
+          </Popover>
+
           {errors.checkOutDate && (
             <p className="text-red-500 text-xs mt-1">
               {errors.checkOutDate.message}
@@ -87,33 +148,33 @@ export function BookingForm({
       </div>
 
       {nights > 0 && (
-        <div className="bg-blue-50 rounded-lg p-3 md:p-4 space-y-2">
-          <div className="flex justify-between text-xs md:text-sm">
+        <div className="bg-neutral-50 rounded-lg p-3 md:p-4 space-y-2">
+          <div className="flex justify-between text-sm">
             <span className="text-gray-600">Number of nights:</span>
             <span className="font-semibold text-gray-900">{nights}</span>
           </div>
-          <div className="flex justify-between text-xs md:text-sm">
+          <div className="flex justify-between text-sm">
             <span className="text-gray-600">Price per night:</span>
             <span className="font-semibold text-gray-900">${room.price}</span>
           </div>
-          <div className="border-t border-blue-200 pt-2 flex justify-between">
+          <div className="border-t border-neutral-200 pt-2 flex justify-between">
             <span className="font-semibold text-gray-900 text-sm">
               Total Price:
             </span>
-            <span className="text-lg md:text-2xl font-bold text-blue-600">
+            <span className="text-lg md:text-2xl font-bold text-neutral-600">
               ${totalPrice}
             </span>
           </div>
         </div>
       )}
 
-      <button
+      <Button
         type="submit"
         disabled={isLoading || !room.availability}
-        className="w-full bg-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+        className="w-full"
       >
         {isLoading ? "Booking..." : "Confirm Booking"}
-      </button>
+      </Button>
     </form>
   );
 }

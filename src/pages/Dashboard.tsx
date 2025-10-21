@@ -1,24 +1,71 @@
 import { useNavigate } from "react-router-dom";
-import { ReservationCard } from "src/components";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  ReservationCard,
+  Separator,
+} from "src/components";
 import { useAuthStore, useReservationStore } from "src/hooks/stores";
+
+function ReservationSection({
+  title,
+  reservations,
+  emptyMessage,
+  showBrowseButton,
+  onBrowse,
+}: {
+  title: string;
+  reservations: any[];
+  emptyMessage: string;
+  showBrowseButton?: boolean;
+  onBrowse?: () => void;
+}) {
+  return (
+    <Card className="mb-8">
+      <CardHeader>
+        <CardTitle className="text-xl md:text-2xl font-bold">{title}</CardTitle>
+      </CardHeader>
+      <Separator />
+      <CardContent className="pt-6">
+        {reservations.length > 0 ? (
+          <div className="h-full space-y-4 md:space-y-6">
+            {reservations.map((reservation) => (
+              <ReservationCard key={reservation.id} reservation={reservation} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-10">
+            <p className="text-gray-600 mb-4">{emptyMessage}</p>
+            {showBrowseButton && (
+              <Button onClick={onBrowse}>Browse Rooms</Button>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
-  const reservations = useReservationStore((state) => state.reservations);
+  const user = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
+  const reservations = useReservationStore((s) => s.reservations);
 
   if (!user) {
     navigate("/login");
     return null;
   }
 
-  const activeReservations = reservations.filter(
-    (r) => r.userId === user.id && r.status === "active"
+  const userReservations = reservations.filter((r) => r.userId === user.id);
+  const activeReservations = userReservations.filter(
+    (r) => r.status === "active"
   );
-
-  const cancelledReservations = reservations.filter(
-    (r) => r.userId === user.id && r.status === "cancelled"
+  const cancelledReservations = userReservations.filter(
+    (r) => r.status === "cancelled"
   );
 
   const handleLogout = () => {
@@ -27,81 +74,39 @@ export function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen-header bg-gray-50 py-6 md:py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* User Info Section */}
-        <div className="bg-white rounded-lg shadow-md p-4 md:p-6 mb-6 md:mb-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div className="min-h-screen-header bg-muted/30 py-8 px-4">
+      <div className="max-w-4xl mx-auto space-y-8">
+        <Card>
+          <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <CardTitle className="text-2xl md:text-3xl">
                 Welcome, {user.name}!
-              </h1>
-              <p className="text-gray-600 mt-1 text-sm md:text-base">
-                {user.email}
-              </p>
+              </CardTitle>
+              <p className="text-muted-foreground mt-1">{user.email}</p>
             </div>
             <div className="flex gap-2 md:gap-3">
-              <button
-                onClick={() => navigate("/")}
-                className="px-4 md:px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition text-sm md:text-base"
-              >
-                Browse Rooms
-              </button>
-              <button
-                onClick={handleLogout}
-                className="px-4 md:px-6 py-2 bg-gray-200 text-gray-900 rounded-lg font-medium hover:bg-gray-300 transition text-sm md:text-base"
-              >
+              <Button onClick={() => navigate("/")}>Browse Rooms</Button>
+              <Button variant="secondary" onClick={handleLogout}>
                 Logout
-              </button>
+              </Button>
             </div>
-          </div>
-        </div>
+          </CardHeader>
+        </Card>
 
-        {/* Active Reservations */}
-        <div>
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
-            Active Reservations
-          </h2>
+        <ReservationSection
+          title="Active Reservations"
+          reservations={activeReservations}
+          emptyMessage="You don't have any active reservations."
+          showBrowseButton
+          onBrowse={() => navigate("/")}
+        />
 
-          {activeReservations.length > 0 ? (
-            <div className="space-y-4 md:space-y-6">
-              {activeReservations.map((reservation) => (
-                <ReservationCard
-                  key={reservation.id}
-                  reservation={reservation}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="bg-white rounded-lg shadow-md p-8 md:p-12 text-center">
-              <p className="text-gray-600 text-base md:text-lg mb-4">
-                You don't have any active reservations.
-              </p>
-              <button
-                onClick={() => navigate("/")}
-                className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition text-sm md:text-base"
-              >
-                Browse Rooms
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Cancelled Reservations */}
         {cancelledReservations.length > 0 && (
-          <div className="mt-10">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
-              Cancelled Reservations
-            </h2>
-            <div className="space-y-4 md:space-y-6">
-              {cancelledReservations.map((reservation) => (
-                <ReservationCard
-                  key={reservation.id}
-                  reservation={reservation}
-                />
-              ))}
-            </div>
-          </div>
+          <ReservationSection
+            title="Cancelled Reservations"
+            reservations={cancelledReservations}
+            emptyMessage="No cancelled reservations."
+          />
         )}
       </div>
     </div>

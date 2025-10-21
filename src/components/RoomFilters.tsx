@@ -1,29 +1,39 @@
-import { ChevronDown } from "lucide-react";
 import { PRICE_RANGE, ROOM_TYPES } from "src/constants";
 import { useRoomStore } from "src/hooks/stores";
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Slider,
+} from "./ui";
 
 export function RoomFilters() {
   const filters = useRoomStore((state) => state.filters);
   const setFilters = useRoomStore((state) => state.setFilters);
 
-  const handlePriceMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({
-      ...filters,
-      priceMin: Number(e.target.value),
-    });
+  const handleRoomTypeChange = (value: string) => {
+    setFilters({ roomType: value === "all" ? null : value });
   };
 
-  const handlePriceMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({
-      ...filters,
-      priceMax: Number(e.target.value),
-    });
+  const handleSortChange = (value: string) => {
+    const val = value as "asc" | "desc" | "none";
+    setFilters({ sortOrder: val });
   };
 
-  const handleRoomTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handlePriceChange = (values: number[]) => {
+    const [min, max] = values;
+    setFilters({ priceMin: min, priceMax: max });
+  };
+
+  const resetFilters = () => {
     setFilters({
-      ...filters,
-      roomType: e.target.value || null,
+      priceMin: PRICE_RANGE.MIN,
+      priceMax: PRICE_RANGE.MAX,
+      roomType: null,
+      sortOrder: "none",
     });
   };
 
@@ -31,79 +41,59 @@ export function RoomFilters() {
     <div className="bg-white rounded-lg shadow-md p-4 md:p-6 space-y-6">
       <h2 className="text-lg md:text-xl font-bold text-gray-900">Filters</h2>
 
-      <div className="relative">
-        <label htmlFor="roomType" className="sr-only">
-          Room Type
-        </label>
-        <select
-          id="roomType"
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">Room Type</label>
+        <Select
           value={filters.roomType || ""}
-          onChange={handleRoomTypeChange}
-          className="w-full px-3 md:px-4 py-2 pr-8 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base appearance-none"
+          onValueChange={handleRoomTypeChange}
         >
-          <option value="">All Types</option>
-          {ROOM_TYPES.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
-
-        <ChevronDown
-          aria-hidden="true"
-          size={18}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-        />
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="All Types" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            {ROOM_TYPES.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Price Range: ${filters.priceMin} - ${filters.priceMax}
+        <label className="block text-sm font-medium text-gray-700 mb-3">
+          Price Range: ${filters.priceMin} – ${filters.priceMax}
         </label>
-        <div className="space-y-3">
-          <div>
-            <label htmlFor="priceMin" className="text-xs text-gray-600">
-              Minimum
-            </label>
-            <input
-              id="priceMin"
-              type="range"
-              min={PRICE_RANGE.MIN}
-              max={PRICE_RANGE.MAX}
-              value={filters.priceMin}
-              onChange={handlePriceMinChange}
-              className="w-full"
-            />
-          </div>
-          <div>
-            <label htmlFor="priceMax" className="text-xs text-gray-600">
-              Maximum
-            </label>
-            <input
-              id="priceMax"
-              type="range"
-              min={PRICE_RANGE.MIN}
-              max={PRICE_RANGE.MAX}
-              value={filters.priceMax}
-              onChange={handlePriceMaxChange}
-              className="w-full"
-            />
-          </div>
-        </div>
+        <Slider
+          min={PRICE_RANGE.MIN}
+          max={PRICE_RANGE.MAX}
+          step={10}
+          value={[filters.priceMin, filters.priceMax]}
+          onValueChange={handlePriceChange}
+          className="w-full"
+        />
       </div>
 
-      <button
-        onClick={() =>
-          setFilters({
-            priceMin: PRICE_RANGE.MIN,
-            priceMax: PRICE_RANGE.MAX,
-            roomType: null,
-          })
-        }
-        className="w-full bg-gray-200 text-gray-900 py-2 rounded-lg font-medium hover:bg-gray-300 transition text-sm md:text-base"
-      >
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">
+          Sort by Price
+        </label>
+        <Select value={filters.sortOrder} onValueChange={handleSortChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Sort by Price" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">Sort by Price</SelectItem>
+            <SelectItem value="asc">Low to High</SelectItem>
+            <SelectItem value="desc">High to Low</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <Button variant="outline" className="w-full" onClick={resetFilters}>
         Reset Filters
-      </button>
+      </Button>
     </div>
   );
 }

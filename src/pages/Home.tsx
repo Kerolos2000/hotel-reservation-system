@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
-import { RoomCard, RoomFilters } from "src/components";
-import { useRoomStore } from "src/hooks/stores";
+import {
+  Card,
+  CardContent,
+  RoomCard,
+  RoomFilters,
+  Separator,
+} from "src/components";
+import { useRoomStore } from "src/hooks";
 
 export function Home() {
   const rooms = useRoomStore((state) => state.rooms);
@@ -14,12 +20,12 @@ export function Home() {
 
   return (
     <div className="min-h-screen-header bg-gray-50">
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-12 md:py-20 px-4">
+      <div className="bg-gradient-to-r from-black via-gray-800 to-gray-700 text-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             Find Your Perfect Room
           </h1>
-          <p className="text-base md:text-xl text-blue-100">
+          <p className="text-base md:text-xl text-neutral-100">
             Browse our collection of comfortable and luxurious rooms
           </p>
         </div>
@@ -41,14 +47,17 @@ export function Home() {
                 ))}
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow-md p-8 md:p-12 text-center">
-                <p className="text-gray-600 text-base md:text-lg">
-                  No rooms found matching your filters.
-                </p>
-                <p className="text-gray-500 mt-2">
-                  Try adjusting your search criteria.
-                </p>
-              </div>
+              <Card className="p-8 md:p-12 text-center">
+                <CardContent>
+                  <p className="text-gray-600 text-base md:text-lg">
+                    No rooms found matching your filters.
+                  </p>
+                  <Separator className="my-4" />
+                  <p className="text-gray-500">
+                    Try adjusting your search criteria.
+                  </p>
+                </CardContent>
+              </Card>
             )}
           </div>
         </div>

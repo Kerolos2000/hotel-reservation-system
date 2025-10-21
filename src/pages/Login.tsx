@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { AuthForm } from "src/components";
+import {
+  AuthForm,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "src/components";
 import { useAuthStore } from "src/hooks/stores";
 import type { LoginFormData } from "src/validation";
 
@@ -30,39 +37,39 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen-header flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 md:p-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">
-          Welcome Back
-        </h1>
-        <p className="text-gray-600 text-center mb-6 md:mb-8 text-sm md:text-base">
-          Sign in to your account
-        </p>
+    <div className="min-h-screen-header flex items-center justify-center px-4 py-8">
+      <Card className="w-full max-w-md shadow-lg rounded-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl md:text-3xl">Welcome Back</CardTitle>
+          <CardDescription className="text-gray-600 text-sm md:text-base">
+            Sign in to your account
+          </CardDescription>
+        </CardHeader>
 
-        <AuthForm onSubmit={handleLogin} isLoading={isLoading} />
+        <CardContent className="p-6 md:p-8">
+          <AuthForm onSubmit={handleLogin} isLoading={isLoading} />
 
-        <div className="mt-6 text-center">
-          <p className="text-gray-600 text-sm md:text-base">
-            Don't have an account?{" "}
-            <Link
-              to="/signup"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Sign up
-            </Link>
-          </p>
-        </div>
+          <div className="mt-6 text-center">
+            <p className="text-gray-600 text-sm md:text-base">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="text-neutral-600 hover:text-neutral-700 font-medium"
+              >
+                Sign up
+              </Link>
+            </p>
+          </div>
 
-        <div className="mt-6 p-3 md:p-4 bg-blue-50 rounded-lg">
-          <p className="text-xs md:text-sm text-gray-600">
+          <div className="mt-6 p-3 md:p-4 bg-neutral-50 rounded-lg text-xs md:text-sm text-gray-600">
             <strong>Demo credentials:</strong>
             <br />
             Email: demo@example.com
             <br />
             Password: password123
-          </p>
-        </div>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

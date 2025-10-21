@@ -19,6 +19,7 @@ export const useRoomStore = create<RoomStore>()(
         priceMin: 50,
         priceMax: 500,
         roomType: null,
+        sortOrder: "none",
       },
 
       setRooms: (rooms) => set({ rooms }),
@@ -30,12 +31,19 @@ export const useRoomStore = create<RoomStore>()(
 
       getFilteredRooms: () => {
         const { rooms, filters } = get();
-        return rooms.filter((room) => {
+        let filtered = rooms.filter((room) => {
           const priceMatch =
             room.price >= filters.priceMin && room.price <= filters.priceMax;
           const typeMatch = !filters.roomType || room.type === filters.roomType;
           return priceMatch && typeMatch;
         });
+
+        if (filters.sortOrder === "asc")
+          filtered = [...filtered].sort((a, b) => a.price - b.price);
+        if (filters.sortOrder === "desc")
+          filtered = [...filtered].sort((a, b) => b.price - a.price);
+
+        return filtered;
       },
     }),
     {

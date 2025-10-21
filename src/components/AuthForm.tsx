@@ -1,6 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginFormData, loginSchema } from "src/validation";
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+} from "./ui";
 
 interface AuthFormProps {
   onSubmit: (data: LoginFormData) => void;
@@ -8,65 +18,45 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ onSubmit, isLoading = false }: AuthFormProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormData>({
+  const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
-      <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Email
-        </label>
-        <input
-          {...register("email")}
-          type="email"
-          id="email"
-          placeholder="you@example.com"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm md:text-base"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="you@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {errors.email && (
-          <p className="text-red-500 text-xs md:text-sm mt-1">
-            {errors.email.message}
-          </p>
-        )}
-      </div>
 
-      <div>
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Password
-        </label>
-        <input
-          {...register("password")}
-          type="password"
-          id="password"
-          placeholder="••••••••"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm md:text-base"
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="••••••••" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {errors.password && (
-          <p className="text-red-500 text-xs md:text-sm mt-1">
-            {errors.password.message}
-          </p>
-        )}
-      </div>
 
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
-      >
-        {isLoading ? "Loading..." : "Sign In"}
-      </button>
-    </form>
+        <Button type="submit" disabled={isLoading} className="w-full">
+          {isLoading ? "Loading..." : "Sign In"}
+        </Button>
+      </form>
+    </Form>
   );
 }

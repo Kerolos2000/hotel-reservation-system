@@ -9,7 +9,14 @@ import {
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { BookingForm } from "src/components";
+import {
+  BookingForm,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "src/components";
 import { useAuthStore, useReservationStore, useRoomStore } from "src/hooks";
 import { BookingFormData } from "src/validation";
 
@@ -27,17 +34,12 @@ export function RoomDetails() {
   if (!room) {
     return (
       <div className="min-h-screen-header flex items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-            Room Not Found
-          </h1>
-          <button
-            onClick={() => navigate("/")}
-            className="text-blue-600 hover:text-blue-700 font-medium text-sm md:text-base"
-          >
+        <Card className="p-6 text-center">
+          <CardTitle>Room Not Found</CardTitle>
+          <Button variant="link" onClick={() => navigate("/")}>
             Back to Rooms
-          </button>
-        </div>
+          </Button>
+        </Card>
       </div>
     );
   }
@@ -74,7 +76,7 @@ export function RoomDetails() {
       addReservation(reservation);
       toast.success("Room booked successfully!");
       navigate("/dashboard");
-    } catch (error) {
+    } catch {
       toast.error("Booking failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -84,51 +86,52 @@ export function RoomDetails() {
   return (
     <div className="min-h-screen-header bg-gray-50 py-6 md:py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <button
+        <Button
+          variant="link"
+          className="flex items-center gap-2 mb-4 text-sm md:text-base"
           onClick={() => navigate("/")}
-          className="text-blue-600 hover:text-blue-700 font-medium mb-4 md:mb-6 flex items-center gap-2 text-sm md:text-base"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Rooms
-        </button>
+        </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="w-full h-64 md:h-96 bg-gray-200">
+            <Card className="overflow-hidden">
+              <div className="w-full h-64 md:h-80 mb-4 bg-gray-200">
                 <img
-                  src={room.image || "/placeholder.svg"}
+                  src={room.image}
                   alt={room.type}
                   className="w-full h-full object-cover"
                 />
               </div>
 
-              <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+              <CardContent className="space-y-4 md:space-y-6">
                 <div>
-                  <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
+                  <CardTitle className="text-2xl mb-2 md:text-4xl">
                     {room.type} Room
-                  </h1>
-                  <p className="text-gray-600 text-base md:text-lg">
+                  </CardTitle>
+                  <CardDescription className="text-gray-600 text-base md:text-lg">
                     {room.description}
-                  </p>
+                  </CardDescription>
                 </div>
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                  <div className="bg-blue-50 rounded-xl p-3 md:p-4 flex flex-col">
+                  <div className="bg-neutral-50 rounded-xl p-3 md:p-4 flex flex-col">
                     <p className="text-gray-500 text-xs md:text-sm flex items-center gap-1">
-                      <Users className="w-4 h-4 text-blue-500" />
-                      Capacity
+                      <Users className="w-4 h-4 text-neutral-500" /> Capacity
                     </p>
-                    <p className="text-xl md:text-2xl font-semibold text-blue-700">
+                    <p className="text-xl md:text-2xl font-semibold text-neutral-700">
                       {room.capacity}
                     </p>
                   </div>
 
-                  <div className="bg-blue-50 rounded-xl p-3 md:p-4 flex flex-col">
+                  <div className="bg-neutral-50 rounded-xl p-3 md:p-4 flex flex-col">
                     <p className="text-gray-500 text-xs md:text-sm flex items-center gap-1">
-                      <DollarSign className="w-4 h-4 text-blue-500" />
+                      <DollarSign className="w-4 h-4 text-neutral-500" />{" "}
                       Price/Night
                     </p>
-                    <p className="text-xl md:text-2xl font-semibold text-blue-700">
+                    <p className="text-xl md:text-2xl font-semibold text-neutral-700">
                       ${room.price}
                     </p>
                   </div>
@@ -143,7 +146,7 @@ export function RoomDetails() {
                         <CheckCircle className="w-4 h-4 text-emerald-500" />
                       ) : (
                         <XCircle className="w-4 h-4 text-rose-500" />
-                      )}
+                      )}{" "}
                       Status
                     </p>
                     <p
@@ -155,6 +158,7 @@ export function RoomDetails() {
                     </p>
                   </div>
                 </div>
+
                 <div>
                   <h2 className="text-lg md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
                     Amenities
@@ -165,14 +169,14 @@ export function RoomDetails() {
                         key={amenity}
                         className="flex items-center gap-2 text-gray-700 text-sm md:text-base"
                       >
-                        <Check className="w-4 h-4 text-blue-600" />
+                        <Check className="w-4 h-4 text-neutral-600" />
                         {amenity}
                       </div>
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="lg:col-span-1">
@@ -183,17 +187,14 @@ export function RoomDetails() {
                 isLoading={isLoading}
               />
             ) : (
-              <div className="bg-white rounded-lg shadow-md p-4 md:p-6 text-center space-y-4">
+              <Card className="p-4 md:p-6 text-center space-y-4">
                 <p className="text-gray-600 text-sm md:text-base">
                   Please log in to book this room
                 </p>
-                <button
-                  onClick={() => navigate("/login")}
-                  className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition text-sm md:text-base"
-                >
+                <Button className="w-full" onClick={() => navigate("/login")}>
                   Sign In
-                </button>
-              </div>
+                </Button>
+              </Card>
             )}
           </div>
         </div>

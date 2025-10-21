@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { SignupForm } from "src/components";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  SignupForm,
+} from "src/components";
 import { useAuthStore } from "src/hooks/stores";
 import type { SignupFormData } from "src/validation";
 
@@ -33,29 +40,31 @@ export function Signup() {
   };
 
   return (
-    <div className="min-h-screen-header flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 md:p-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">
-          Create Account
-        </h1>
-        <p className="text-gray-600 text-center mb-6 md:mb-8 text-sm md:text-base">
-          Join us to book your perfect room
-        </p>
+    <div className="min-h-screen-header flex items-center justify-center px-4 py-8">
+      <Card className="w-full max-w-md shadow-lg rounded-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl md:text-3xl">Create Account</CardTitle>
+          <CardDescription className="text-gray-600 text-sm md:text-base">
+            Join us to book your perfect room
+          </CardDescription>
+        </CardHeader>
 
-        <SignupForm onSubmit={handleSignup} isLoading={isLoading} />
+        <CardContent className="p-6 md:p-8">
+          <SignupForm onSubmit={handleSignup} isLoading={isLoading} />
 
-        <div className="mt-6 text-center">
-          <p className="text-gray-600 text-sm md:text-base">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Sign in
-            </Link>
-          </p>
-        </div>
-      </div>
+          <div className="mt-6 text-center">
+            <p className="text-gray-600 text-sm md:text-base">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-neutral-600 hover:text-neutral-700 font-medium"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

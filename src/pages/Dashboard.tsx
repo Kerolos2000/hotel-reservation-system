@@ -1,22 +1,25 @@
 import { useNavigate } from "react-router-dom";
-import { ReservationCard } from "src/components/ReservationCard";
-import { useAuthStore } from "src/stores/authStore";
-import { useReservationStore } from "src/stores/reservationStore";
+import { ReservationCard } from "src/components";
+import { useAuthStore, useReservationStore } from "src/hooks/stores";
 
 export function Dashboard() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
-  const getUserReservations = useReservationStore(
-    (state) => state.getUserReservations
-  );
+  const reservations = useReservationStore((state) => state.reservations);
 
   if (!user) {
     navigate("/login");
     return null;
   }
 
-  const reservations = getUserReservations(user.id);
+  const activeReservations = reservations.filter(
+    (r) => r.userId === user.id && r.status === "active"
+  );
+
+  const cancelledReservations = reservations.filter(
+    (r) => r.userId === user.id && r.status === "cancelled"
+  );
 
   const handleLogout = () => {
     logout();
@@ -24,8 +27,9 @@ export function Dashboard() {
   };
 
   return (
-    <div className="h-screen-header bg-gray-50 py-6 md:py-8 px-4">
+    <div className="min-h-screen-header bg-gray-50 py-6 md:py-8 px-4">
       <div className="max-w-4xl mx-auto">
+        {/* User Info Section */}
         <div className="bg-white rounded-lg shadow-md p-4 md:p-6 mb-6 md:mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -53,14 +57,15 @@ export function Dashboard() {
           </div>
         </div>
 
+        {/* Active Reservations */}
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
-            Your Reservations
+            Active Reservations
           </h2>
 
-          {reservations.length > 0 ? (
+          {activeReservations.length > 0 ? (
             <div className="space-y-4 md:space-y-6">
-              {reservations.map((reservation) => (
+              {activeReservations.map((reservation) => (
                 <ReservationCard
                   key={reservation.id}
                   reservation={reservation}
@@ -70,7 +75,7 @@ export function Dashboard() {
           ) : (
             <div className="bg-white rounded-lg shadow-md p-8 md:p-12 text-center">
               <p className="text-gray-600 text-base md:text-lg mb-4">
-                You don't have any active reservations yet.
+                You don't have any active reservations.
               </p>
               <button
                 onClick={() => navigate("/")}
@@ -81,6 +86,23 @@ export function Dashboard() {
             </div>
           )}
         </div>
+
+        {/* Cancelled Reservations */}
+        {cancelledReservations.length > 0 && (
+          <div className="mt-10">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
+              Cancelled Reservations
+            </h2>
+            <div className="space-y-4 md:space-y-6">
+              {cancelledReservations.map((reservation) => (
+                <ReservationCard
+                  key={reservation.id}
+                  reservation={reservation}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

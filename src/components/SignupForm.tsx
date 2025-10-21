@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { signupSchema, type SignupFormData } from "src/validation/auth"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { SignupFormData, signupSchema } from "src/validation";
 
 interface SignupFormProps {
-  onSubmit: (data: SignupFormData) => void
-  isLoading?: boolean
+  onSubmit: (data: SignupFormData) => void;
+  isLoading?: boolean;
 }
 
 export function SignupForm({ onSubmit, isLoading = false }: SignupFormProps) {
@@ -14,12 +14,15 @@ export function SignupForm({ onSubmit, isLoading = false }: SignupFormProps) {
     formState: { errors },
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
-  })
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Full Name
         </label>
         <input
@@ -29,11 +32,18 @@ export function SignupForm({ onSubmit, isLoading = false }: SignupFormProps) {
           placeholder="John Doe"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm md:text-base"
         />
-        {errors.name && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.name.message}</p>}
+        {errors.name && (
+          <p className="text-red-500 text-xs md:text-sm mt-1">
+            {errors.name.message}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Email
         </label>
         <input
@@ -43,11 +53,18 @@ export function SignupForm({ onSubmit, isLoading = false }: SignupFormProps) {
           placeholder="you@example.com"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm md:text-base"
         />
-        {errors.email && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.email.message}</p>}
+        {errors.email && (
+          <p className="text-red-500 text-xs md:text-sm mt-1">
+            {errors.email.message}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Password
         </label>
         <input
@@ -57,11 +74,18 @@ export function SignupForm({ onSubmit, isLoading = false }: SignupFormProps) {
           placeholder="••••••••"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm md:text-base"
         />
-        {errors.password && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="text-red-500 text-xs md:text-sm mt-1">
+            {errors.password.message}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="confirmPassword"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Confirm Password
         </label>
         <input
@@ -71,7 +95,11 @@ export function SignupForm({ onSubmit, isLoading = false }: SignupFormProps) {
           placeholder="••••••••"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm md:text-base"
         />
-        {errors.confirmPassword && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.confirmPassword.message}</p>}
+        {errors.confirmPassword && (
+          <p className="text-red-500 text-xs md:text-sm mt-1">
+            {errors.confirmPassword.message}
+          </p>
+        )}
       </div>
 
       <button
@@ -82,5 +110,5 @@ export function SignupForm({ onSubmit, isLoading = false }: SignupFormProps) {
         {isLoading ? "Creating Account..." : "Sign Up"}
       </button>
     </form>
-  )
+  );
 }

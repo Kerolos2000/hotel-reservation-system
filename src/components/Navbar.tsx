@@ -1,7 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "src/stores/authStore";
+import { useAuthStore } from "src/hooks/stores";
 
 export function Navbar() {
   const navigate = useNavigate();

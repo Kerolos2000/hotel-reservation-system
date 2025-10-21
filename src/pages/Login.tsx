@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { AuthForm } from "src/components/AuthForm";
-import { useAuthStore } from "src/stores/authStore";
-import type { LoginFormData } from "src/validation/auth";
+import { AuthForm } from "src/components";
+import { useAuthStore } from "src/hooks/stores";
+import type { LoginFormData } from "src/validation";
 
 export function Login() {
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ export function Login() {
   };
 
   return (
-    <div className="h-screen-header flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8">
+    <div className="min-h-screen-header flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 md:p-8">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">
           Welcome Back

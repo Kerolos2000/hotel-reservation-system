@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import { HydrateFallback } from "src/components/HydrateFallback";
-import { MainLayout } from "src/layouts/MainLayout";
-import { ProtectedRoute } from "src/routes/ProtectedRoute";
+import { HydrateFallback } from "src/components";
+import { MainLayout } from "src/layouts";
+import { ProtectedRoute } from "src/routes";
 
 export const AppRoutes = createBrowserRouter([
   {
@@ -12,35 +12,35 @@ export const AppRoutes = createBrowserRouter([
       {
         index: true,
         async lazy() {
-          const { Home } = await import("src/pages/Home");
+          const { Home } = await import("src/pages");
           return { Component: Home };
         },
       },
       {
         path: "/login",
         async lazy() {
-          const { Login } = await import("src/pages/Login");
+          const { Login } = await import("src/pages");
           return { Component: Login };
         },
       },
       {
         path: "/signup",
         async lazy() {
-          const { Signup } = await import("src/pages/Signup");
+          const { Signup } = await import("src/pages");
           return { Component: Signup };
         },
       },
       {
         path: "/room/:id",
         async lazy() {
-          const { RoomDetails } = await import("src/pages/RoomDetails");
+          const { RoomDetails } = await import("src/pages");
           return { Component: RoomDetails };
         },
       },
       {
         path: "/dashboard",
         async lazy() {
-          const { Dashboard } = await import("src/pages/Dashboard");
+          const { Dashboard } = await import("src/pages");
           return {
             element: (
               <ProtectedRoute>

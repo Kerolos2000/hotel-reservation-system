@@ -12,6 +12,9 @@ export default {
       height: {
         "screen-header": "calc(100vh - 70px)",
       },
+      minHeight: {
+        "screen-header": "calc(100vh - 70px)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -1,16 +1,20 @@
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { bookingSchema, type BookingFormData } from "src/validation/booking"
-import { calculateNights, calculateTotalPrice } from "src/lib/utils"
-import type { Room } from "src/types"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { calculateNights, calculateTotalPrice } from "src/lib";
+import { Room } from "src/types";
+import { BookingFormData, bookingSchema } from "src/validation";
 
 interface BookingFormProps {
-  room: Room
-  onSubmit: (data: BookingFormData) => void
-  isLoading?: boolean
+  room: Room;
+  onSubmit: (data: BookingFormData) => void;
+  isLoading?: boolean;
 }
 
-export function BookingForm({ room, onSubmit, isLoading = false }: BookingFormProps) {
+export function BookingForm({
+  room,
+  onSubmit,
+  isLoading = false,
+}: BookingFormProps) {
   const {
     register,
     handleSubmit,
@@ -18,21 +22,32 @@ export function BookingForm({ room, onSubmit, isLoading = false }: BookingFormPr
     formState: { errors },
   } = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
-  })
+  });
 
-  const checkInDate = watch("checkInDate")
-  const checkOutDate = watch("checkOutDate")
+  const checkInDate = watch("checkInDate");
+  const checkOutDate = watch("checkOutDate");
 
-  const nights = checkInDate && checkOutDate ? calculateNights(checkInDate, checkOutDate) : 0
-  const totalPrice = nights > 0 ? calculateTotalPrice(room.price, nights) : 0
+  const nights =
+    checkInDate && checkOutDate
+      ? calculateNights(checkInDate, checkOutDate)
+      : 0;
+  const totalPrice = nights > 0 ? calculateTotalPrice(room.price, nights) : 0;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-md p-4 md:p-6 space-y-4 sticky top-24">
-      <h3 className="text-lg md:text-xl font-bold text-gray-900">Book This Room</h3>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-white rounded-lg shadow-md p-4 md:p-6 space-y-4 sticky top-24"
+    >
+      <h3 className="text-lg md:text-xl font-bold text-gray-900">
+        Book This Room
+      </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         <div>
-          <label htmlFor="checkInDate" className="block text-xs md:text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="checkInDate"
+            className="block text-xs md:text-sm font-medium text-gray-700 mb-1"
+          >
             Check-in Date
           </label>
           <input
@@ -42,11 +57,18 @@ export function BookingForm({ room, onSubmit, isLoading = false }: BookingFormPr
             min={new Date().toISOString().split("T")[0]}
             className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
-          {errors.checkInDate && <p className="text-red-500 text-xs mt-1">{errors.checkInDate.message}</p>}
+          {errors.checkInDate && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.checkInDate.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="checkOutDate" className="block text-xs md:text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="checkOutDate"
+            className="block text-xs md:text-sm font-medium text-gray-700 mb-1"
+          >
             Check-out Date
           </label>
           <input
@@ -56,7 +78,11 @@ export function BookingForm({ room, onSubmit, isLoading = false }: BookingFormPr
             min={checkInDate || new Date().toISOString().split("T")[0]}
             className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
-          {errors.checkOutDate && <p className="text-red-500 text-xs mt-1">{errors.checkOutDate.message}</p>}
+          {errors.checkOutDate && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.checkOutDate.message}
+            </p>
+          )}
         </div>
       </div>
 
@@ -71,8 +97,12 @@ export function BookingForm({ room, onSubmit, isLoading = false }: BookingFormPr
             <span className="font-semibold text-gray-900">${room.price}</span>
           </div>
           <div className="border-t border-blue-200 pt-2 flex justify-between">
-            <span className="font-semibold text-gray-900 text-sm">Total Price:</span>
-            <span className="text-lg md:text-2xl font-bold text-blue-600">${totalPrice}</span>
+            <span className="font-semibold text-gray-900 text-sm">
+              Total Price:
+            </span>
+            <span className="text-lg md:text-2xl font-bold text-blue-600">
+              ${totalPrice}
+            </span>
           </div>
         </div>
       )}
@@ -85,5 +115,5 @@ export function BookingForm({ room, onSubmit, isLoading = false }: BookingFormPr
         {isLoading ? "Booking..." : "Confirm Booking"}
       </button>
     </form>
-  )
+  );
 }

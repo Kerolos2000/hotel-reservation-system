@@ -1,11 +1,17 @@
+import {
+  ArrowLeft,
+  Check,
+  CheckCircle,
+  DollarSign,
+  Users,
+  XCircle,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { BookingForm } from "src/components/BookingForm";
-import { useAuthStore } from "src/stores/authStore";
-import { useReservationStore } from "src/stores/reservationStore";
-import { useRoomStore } from "src/stores/roomStore";
-import type { BookingFormData } from "src/validation/booking";
+import { BookingForm } from "src/components";
+import { useAuthStore, useReservationStore, useRoomStore } from "src/hooks";
+import { BookingFormData } from "src/validation";
 
 export function RoomDetails() {
   const { id } = useParams<{ id: string }>();
@@ -20,7 +26,7 @@ export function RoomDetails() {
 
   if (!room) {
     return (
-      <div className="h-screen-header flex items-center justify-center px-4">
+      <div className="min-h-screen-header flex items-center justify-center px-4">
         <div className="text-center">
           <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
             Room Not Found
@@ -76,13 +82,14 @@ export function RoomDetails() {
   };
 
   return (
-    <div className="h-screen-header bg-gray-50 py-6 md:py-8 px-4">
+    <div className="min-h-screen-header bg-gray-50 py-6 md:py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <button
           onClick={() => navigate("/")}
           className="text-blue-600 hover:text-blue-700 font-medium mb-4 md:mb-6 flex items-center gap-2 text-sm md:text-base"
         >
-          ← Back to Rooms
+          <ArrowLeft className="w-4 h-4" />
+          Back to Rooms
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
@@ -105,34 +112,49 @@ export function RoomDetails() {
                     {room.description}
                   </p>
                 </div>
-
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                  <div className="bg-blue-50 rounded-lg p-3 md:p-4">
-                    <p className="text-gray-600 text-xs md:text-sm">Capacity</p>
-                    <p className="text-xl md:text-2xl font-bold text-blue-600">
+                  <div className="bg-blue-50 rounded-xl p-3 md:p-4 flex flex-col">
+                    <p className="text-gray-500 text-xs md:text-sm flex items-center gap-1">
+                      <Users className="w-4 h-4 text-blue-500" />
+                      Capacity
+                    </p>
+                    <p className="text-xl md:text-2xl font-semibold text-blue-700">
                       {room.capacity}
                     </p>
                   </div>
-                  <div className="bg-blue-50 rounded-lg p-3 md:p-4">
-                    <p className="text-gray-600 text-xs md:text-sm">
+
+                  <div className="bg-blue-50 rounded-xl p-3 md:p-4 flex flex-col">
+                    <p className="text-gray-500 text-xs md:text-sm flex items-center gap-1">
+                      <DollarSign className="w-4 h-4 text-blue-500" />
                       Price/Night
                     </p>
-                    <p className="text-xl md:text-2xl font-bold text-blue-600">
+                    <p className="text-xl md:text-2xl font-semibold text-blue-700">
                       ${room.price}
                     </p>
                   </div>
-                  <div className="bg-blue-50 rounded-lg p-3 md:p-4">
-                    <p className="text-gray-600 text-xs md:text-sm">Status</p>
+
+                  <div
+                    className={`rounded-xl p-3 md:p-4 flex flex-col ${
+                      room.availability ? "bg-emerald-50/60" : "bg-rose-50/60"
+                    }`}
+                  >
+                    <p className="text-gray-500 text-xs md:text-sm flex items-center gap-1">
+                      {room.availability ? (
+                        <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      ) : (
+                        <XCircle className="w-4 h-4 text-rose-500" />
+                      )}
+                      Status
+                    </p>
                     <p
-                      className={`text-lg md:text-xl font-bold ${
-                        room.availability ? "text-green-600" : "text-red-600"
+                      className={`text-lg md:text-xl font-semibold ${
+                        room.availability ? "text-emerald-700" : "text-rose-700"
                       }`}
                     >
                       {room.availability ? "Available" : "Booked"}
                     </p>
                   </div>
                 </div>
-
                 <div>
                   <h2 className="text-lg md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
                     Amenities
@@ -143,7 +165,7 @@ export function RoomDetails() {
                         key={amenity}
                         className="flex items-center gap-2 text-gray-700 text-sm md:text-base"
                       >
-                        <span className="text-blue-600">✓</span>
+                        <Check className="w-4 h-4 text-blue-600" />
                         {amenity}
                       </div>
                     ))}

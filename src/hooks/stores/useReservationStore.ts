@@ -7,12 +7,11 @@ interface ReservationStore {
   addReservation: (reservation: Reservation) => void;
   cancelReservation: (reservationId: string) => void;
   setReservations: (reservations: Reservation[]) => void;
-  getUserReservations: (userId: string) => Reservation[];
 }
 
 export const useReservationStore = create<ReservationStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       reservations: [],
 
       addReservation: (reservation) =>
@@ -32,14 +31,7 @@ export const useReservationStore = create<ReservationStore>()(
         })),
 
       setReservations: (reservations) => set({ reservations }),
-
-      getUserReservations: (userId) =>
-        get().reservations.filter(
-          (res) => res.userId === userId && res.status === "active"
-        ),
     }),
-    {
-      name: "reservation-storage",
-    }
+    { name: "reservation-storage" }
   )
 );

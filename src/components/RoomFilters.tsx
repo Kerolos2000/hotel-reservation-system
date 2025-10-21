@@ -1,7 +1,6 @@
 import { ChevronDown } from "lucide-react";
-import type React from "react";
 import { PRICE_RANGE, ROOM_TYPES } from "src/constants";
-import { useRoomStore } from "src/stores/roomStore";
+import { useRoomStore } from "src/hooks/stores";
 
 export function RoomFilters() {
   const filters = useRoomStore((state) => state.filters);

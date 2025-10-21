@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { RoomCard } from "src/components/RoomCard";
-import { RoomFilters } from "src/components/RoomFilters";
-import { useRoomStore } from "src/stores/roomStore";
+import { RoomCard, RoomFilters } from "src/components";
+import { useRoomStore } from "src/hooks/stores";
 
 export function Home() {
   const rooms = useRoomStore((state) => state.rooms);
@@ -14,7 +13,7 @@ export function Home() {
   }, [filters, getFilteredRooms]);
 
   return (
-    <div className="h-screen-header bg-gray-50">
+    <div className="min-h-screen-header bg-gray-50">
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">

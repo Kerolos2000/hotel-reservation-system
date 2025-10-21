@@ -35,50 +35,48 @@ https://pagespeed.web.dev/analysis/https-hotel-reservation-system-gold-vercel-ap
 
 ## Project Structure
 
-\`\`\`
+```bash
 src/
-├── components/        # Reusable UI components
-├── config/           # Configuration files
+├── components/       # Reusable UI components
 ├── constants/        # Application constants
-├── enums/            # TypeScript enums
 ├── hooks/            # Custom React hooks
+    ├── stores/       # Zustand stores
 ├── layouts/          # Layout components
 ├── lib/              # Utility functions and helpers
 ├── pages/            # Page components
 ├── routes/           # Route definitions
-├── stores/           # Zustand stores
 ├── styles/           # Global styles
 ├── types/            # TypeScript type definitions
 └── validation/       # Zod validation schemas
-\`\`\`
+```
 
 ## Getting Started
 
 ### Installation
 
-\`\`\`bash
-yarn install
-\`\`\`
+```bash
+yarn
+```
 
 ### Development
 
-\`\`\`bash
+```bash
 yarn dev
-\`\`\`
+```
 
 The application will be available at `http://localhost:5173`
 
 ### Build
 
-\`\`\`bash
+```bash
 yarn build
-\`\`\`
+```
 
 ### Preview
 
-\`\`\`bash
+```bash
 yarn preview
-\`\`\`
+```
 
 ## Usage
 
@@ -103,7 +101,7 @@ yarn preview
 3. Cancel a reservation if needed
 
 ## Demo Credentials
-
+**Create New Account From Signup Page or use demo account** 
 - **Email**: demo@example.com
 - **Password**: password123
 

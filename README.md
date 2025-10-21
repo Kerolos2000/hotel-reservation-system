@@ -2,6 +2,17 @@
 
 A modern, fully responsive hotel reservation system built with React, TypeScript, and Zustand.
 
+## Performance Scores
+
+### Google PageSpeed Insights Link
+https://pagespeed.web.dev/analysis/https-hotel-reservation-system-gold-vercel-app/i1worzrhyz?form_factor=desktop
+
+### Desktop Score
+![Desktop Score](public/pc-score.png)
+
+### Mobile Score
+![Mobile Score](public/phone-score.png)
+
 ## Features
 
 - **Room Browsing**: View available hotel rooms with detailed information

@@ -6,3 +6,4 @@ export * from "./ReservationCard";
 export * from "./RoomCard";
 export * from "./RoomFilters";
 export * from "./SignupForm";
+export * from "./ui";

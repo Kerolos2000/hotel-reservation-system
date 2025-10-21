@@ -20,7 +20,7 @@ export function Home() {
 
   return (
     <div className="min-h-screen-header bg-gray-50">
-      <div className="bg-gradient-to-r from-black via-gray-800 to-gray-700 text-white py-12 md:py-20 px-4">
+      <section className="bg-gradient-to-r from-black via-gray-800 to-gray-700 text-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             Find Your Perfect Room
@@ -29,9 +29,9 @@ export function Home() {
             Browse our collection of comfortable and luxurious rooms
           </p>
         </div>
-      </div>
+      </section>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
+      <section className="max-w-6xl mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
           <div className="lg:col-span-1">
             <div className="sticky top-20">
@@ -61,7 +61,7 @@ export function Home() {
             )}
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

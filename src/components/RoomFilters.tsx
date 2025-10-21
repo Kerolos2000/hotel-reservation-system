@@ -42,12 +42,18 @@ export function RoomFilters() {
       <h2 className="text-lg md:text-xl font-bold text-gray-900">Filters</h2>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">Room Type</label>
+        <label
+          id="room-type-label"
+          className="text-sm font-medium text-gray-700"
+        >
+          Room Type
+        </label>
         <Select
           value={filters.roomType || ""}
           onValueChange={handleRoomTypeChange}
+          aria-labelledby="room-type-label"
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full" aria-label="Room Type">
             <SelectValue placeholder="All Types" />
           </SelectTrigger>
           <SelectContent>
@@ -62,7 +68,10 @@ export function RoomFilters() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">
+        <label
+          id="price-range-label"
+          className="block text-sm font-medium text-gray-700 mb-3"
+        >
           Price Range: ${filters.priceMin} – ${filters.priceMax}
         </label>
         <Slider
@@ -72,15 +81,23 @@ export function RoomFilters() {
           value={[filters.priceMin, filters.priceMax]}
           onValueChange={handlePriceChange}
           className="w-full"
+          aria-labelledby="price-range-label"
         />
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">
+        <label
+          id="sort-price-label"
+          className="text-sm font-medium text-gray-700"
+        >
           Sort by Price
         </label>
-        <Select value={filters.sortOrder} onValueChange={handleSortChange}>
-          <SelectTrigger className="w-full">
+        <Select
+          value={filters.sortOrder}
+          onValueChange={handleSortChange}
+          aria-labelledby="sort-price-label"
+        >
+          <SelectTrigger className="w-full" aria-label="Sort by Price">
             <SelectValue placeholder="Sort by Price" />
           </SelectTrigger>
           <SelectContent>
@@ -91,7 +108,12 @@ export function RoomFilters() {
         </Select>
       </div>
 
-      <Button variant="outline" className="w-full" onClick={resetFilters}>
+      <Button
+        variant="outline"
+        className="w-full"
+        onClick={resetFilters}
+        aria-label="Reset all filters"
+      >
         Reset Filters
       </Button>
     </div>

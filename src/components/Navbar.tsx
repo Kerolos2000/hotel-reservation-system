@@ -56,7 +56,7 @@ export function Navbar() {
   );
 
   return (
-    <nav className="bg-white shadow-md h-[70px] sticky top-0 z-50">
+    <header className="bg-white shadow-md h-[70px] sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
         <Link to="/" className="text-xl font-bold text-neutral-600">
           HotelHub
@@ -120,6 +120,6 @@ export function Navbar() {
           </Sheet>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }
